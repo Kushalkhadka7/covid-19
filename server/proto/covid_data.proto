@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "pb";
+
+message CovidCasesResponse{
+    string _id = 1;
+    string country = 2;
+    string countryCode = 3;
+    int32 totalCases = 4;
+    int32 newCases = 5;
+    int32 totalDeaths = 6;
+    int32 newDeaths = 7;
+    int32 activeCases = 8;
+    int32 totalRecovered = 9;
+    int32 criticalCases = 10;
+    double casesPerOneMillion = 11;
+    double deathsPerOneMillion = 12;
+    int32 tests = 13;
+    double testsPerOneMillion = 14;
+    string continent = 15;
+    CountryInfo countryInfo = 16;
+    string updated = 17;
+    int32 __v = 18;
+}
+
+message CountryInfo {
+    int32 _id = 1;
+    string iso2 = 2;
+    string iso3 = 3;
+    double lat = 4;
+    double long = 5;
+    string flag = 6;
+}
+
+message CovidCasesRequest{
+   string search_string = 1;
+}
+
+message Response{
+    repeated CovidCasesResponse response = 1;
+}
+
+service CovidService{
+    rpc GetCurrentCovidInfo(CovidCasesRequest) returns(Response) {}
+}
