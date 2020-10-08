@@ -35,7 +35,7 @@ func main() {
 	// New grpc client.
 	covidClient := covidclient.New(grpcConnection)
 
-	duration := 5 * time.Second
+	duration := 2 * time.Second
 	go func(text string) {
 		wait := duration
 		for {
