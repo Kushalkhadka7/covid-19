@@ -346,53 +346,6 @@ func (x *CovidCasesRequest) GetSearchString() string {
 	return ""
 }
 
-type Response struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Response []*CovidCasesResponse `protobuf:"bytes,1,rep,name=response,proto3" json:"response,omitempty"`
-}
-
-func (x *Response) Reset() {
-	*x = Response{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_covid_data_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Response) ProtoMessage() {}
-
-func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_covid_data_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Response.ProtoReflect.Descriptor instead.
-func (*Response) Descriptor() ([]byte, []int) {
-	return file_proto_covid_data_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *Response) GetResponse() []*CovidCasesResponse {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
-
 var File_proto_covid_data_proto protoreflect.FileDescriptor
 
 var file_proto_covid_data_proto_rawDesc = []byte{
@@ -448,17 +401,14 @@ var file_proto_covid_data_proto_rawDesc = []byte{
 	0x61, 0x67, 0x22, 0x38, 0x0a, 0x11, 0x43, 0x6f, 0x76, 0x69, 0x64, 0x43, 0x61, 0x73, 0x65, 0x73,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x73, 0x65, 0x61, 0x72, 0x63,
 	0x68, 0x5f, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c,
-	0x73, 0x65, 0x61, 0x72, 0x63, 0x68, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x22, 0x3e, 0x0a, 0x08,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x32, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x70, 0x62, 0x2e,
-	0x43, 0x6f, 0x76, 0x69, 0x64, 0x43, 0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x4c, 0x0a, 0x0c,
-	0x43, 0x6f, 0x76, 0x69, 0x64, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3c, 0x0a, 0x13,
+	0x73, 0x65, 0x61, 0x72, 0x63, 0x68, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x32, 0x56, 0x0a, 0x0c,
+	0x43, 0x6f, 0x76, 0x69, 0x64, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x46, 0x0a, 0x13,
 	0x47, 0x65, 0x74, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x76, 0x69, 0x64, 0x49,
 	0x6e, 0x66, 0x6f, 0x12, 0x15, 0x2e, 0x70, 0x62, 0x2e, 0x43, 0x6f, 0x76, 0x69, 0x64, 0x43, 0x61,
-	0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0c, 0x2e, 0x70, 0x62, 0x2e,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x04, 0x5a, 0x02, 0x70, 0x62,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x62, 0x2e,
+	0x43, 0x6f, 0x76, 0x69, 0x64, 0x43, 0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x42, 0x04, 0x5a, 0x02, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -473,23 +423,21 @@ func file_proto_covid_data_proto_rawDescGZIP() []byte {
 	return file_proto_covid_data_proto_rawDescData
 }
 
-var file_proto_covid_data_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_proto_covid_data_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_covid_data_proto_goTypes = []interface{}{
 	(*CovidCasesResponse)(nil), // 0: pb.CovidCasesResponse
 	(*CountryInfo)(nil),        // 1: pb.CountryInfo
 	(*CovidCasesRequest)(nil),  // 2: pb.CovidCasesRequest
-	(*Response)(nil),           // 3: pb.Response
 }
 var file_proto_covid_data_proto_depIdxs = []int32{
 	1, // 0: pb.CovidCasesResponse.countryInfo:type_name -> pb.CountryInfo
-	0, // 1: pb.Response.response:type_name -> pb.CovidCasesResponse
-	2, // 2: pb.CovidService.GetCurrentCovidInfo:input_type -> pb.CovidCasesRequest
-	3, // 3: pb.CovidService.GetCurrentCovidInfo:output_type -> pb.Response
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: pb.CovidService.GetCurrentCovidInfo:input_type -> pb.CovidCasesRequest
+	0, // 2: pb.CovidService.GetCurrentCovidInfo:output_type -> pb.CovidCasesResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_proto_covid_data_proto_init() }
@@ -534,18 +482,6 @@ func file_proto_covid_data_proto_init() {
 				return nil
 			}
 		}
-		file_proto_covid_data_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Response); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -553,7 +489,7 @@ func file_proto_covid_data_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_covid_data_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -579,7 +515,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CovidServiceClient interface {
-	GetCurrentCovidInfo(ctx context.Context, in *CovidCasesRequest, opts ...grpc.CallOption) (*Response, error)
+	GetCurrentCovidInfo(ctx context.Context, in *CovidCasesRequest, opts ...grpc.CallOption) (*CovidCasesResponse, error)
 }
 
 type covidServiceClient struct {
@@ -590,8 +526,8 @@ func NewCovidServiceClient(cc grpc.ClientConnInterface) CovidServiceClient {
 	return &covidServiceClient{cc}
 }
 
-func (c *covidServiceClient) GetCurrentCovidInfo(ctx context.Context, in *CovidCasesRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *covidServiceClient) GetCurrentCovidInfo(ctx context.Context, in *CovidCasesRequest, opts ...grpc.CallOption) (*CovidCasesResponse, error) {
+	out := new(CovidCasesResponse)
 	err := c.cc.Invoke(ctx, "/pb.CovidService/GetCurrentCovidInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -601,14 +537,14 @@ func (c *covidServiceClient) GetCurrentCovidInfo(ctx context.Context, in *CovidC
 
 // CovidServiceServer is the server API for CovidService service.
 type CovidServiceServer interface {
-	GetCurrentCovidInfo(context.Context, *CovidCasesRequest) (*Response, error)
+	GetCurrentCovidInfo(context.Context, *CovidCasesRequest) (*CovidCasesResponse, error)
 }
 
 // UnimplementedCovidServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedCovidServiceServer struct {
 }
 
-func (*UnimplementedCovidServiceServer) GetCurrentCovidInfo(context.Context, *CovidCasesRequest) (*Response, error) {
+func (*UnimplementedCovidServiceServer) GetCurrentCovidInfo(context.Context, *CovidCasesRequest) (*CovidCasesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentCovidInfo not implemented")
 }
 

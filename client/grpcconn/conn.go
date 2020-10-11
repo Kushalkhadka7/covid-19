@@ -8,13 +8,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-//GrpcClientConn connection.
-type GrpcClientConn struct {
-	*grpc.ClientConn
-}
-
 // NewGrpcClient grpc client to connect to the server in given port number.
-func NewGrpcClient(port int) (*GrpcClientConn, error) {
+func NewGrpcClient(port int) (*grpc.ClientConn, error) {
 	conn, err := grpc.Dial(fmt.Sprintf(":%d", port), grpc.WithInsecure())
 	if err != nil {
 		return nil, util.Error("Cannot connect to grpc server: ", err)
@@ -22,5 +17,5 @@ func NewGrpcClient(port int) (*GrpcClientConn, error) {
 	}
 
 	log.Printf("Grpc Server listening on :%d\n", port)
-	return &GrpcClientConn{conn}, nil
+	return conn, nil
 }

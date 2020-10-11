@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -23,7 +22,7 @@ func NewCovidServiceServer() *Server {
 }
 
 // GetCurrentCovidInfo get covid data based on the search srting.
-func (css *Server) GetCurrentCovidInfo(ctx context.Context, req *pb.CovidCasesRequest) (*pb.Response, error) {
+func (css *Server) GetCurrentCovidInfo(ctx context.Context, req *pb.CovidCasesRequest) (*pb.CovidCasesResponse, error) {
 
 	client := &http.Client{}
 	request, err := http.NewRequest(methodGet, url, nil)
@@ -46,15 +45,9 @@ func (css *Server) GetCurrentCovidInfo(ctx context.Context, req *pb.CovidCasesRe
 	if err := json.Unmarshal(body, &resposneData); err != nil {
 		return nil, fmt.Errorf("Cannot un marshal body:%v", err)
 	}
+	filteredCovidData := filterDataByCountry(resposneData, req.SearchString)
 
-	data := &pb.Response{
-		Response: resposneData,
-	}
-	newData := filterDataByCountry(resposneData, req.SearchString)
-
-	log.Println(newData)
-
-	return data, nil
+	return filteredCovidData, nil
 }
 
 // filterDataByCountry filter the covid data by search string

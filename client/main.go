@@ -6,14 +6,30 @@ import (
 	covidclient "covid_client/covidclient"
 	"covid_client/grpcconn"
 	"covid_client/http"
+	pb "covid_client/pb/proto"
 	"covid_client/util"
 	"time"
 
 	"flag"
 	"fmt"
 	"os"
-	"regexp"
+
+	"github.com/olekukonko/tablewriter"
 )
+
+type newData struct {
+	country string
+}
+
+// newDataValue is a NewDataValue.
+func newDataValue() *newData {
+	return &newData{}
+}
+
+var dataValue = newDataValue()
+
+var searchText string
+var shouldFollowSearch string
 
 func main() {
 
@@ -26,45 +42,104 @@ func main() {
 	// Creates http server.
 	httpServer := http.New(8081)
 
+	_, err := httpServer.CreateHTTPServer()
+	if err != nil {
+		panic(err)
+	}
+	defer httpServer.Stop()
+
 	// Connect to the Grpc server on given port.
 	grpcConnection, err := grpcconn.NewGrpcClient(*port)
 	if err != nil {
 		util.Error("Unable to establish grpc server connection ", err)
 	}
 
+	covidServiceClient := pb.NewCovidServiceClient(grpcConnection)
 	// New grpc client.
-	covidClient := covidclient.New(grpcConnection)
+	covidClient := covidclient.New(covidServiceClient)
 
-	duration := 2 * time.Second
-	go func(text string) {
-		wait := duration
-		for {
-			time.Sleep(wait)
-			covidClient.GetData(ctx, text)
-		}
-
-	}("Nepal")
-
+	var count int
+	chang := make(chan string)
+	newChannel := make(chan string)
 	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter the country you want to know info: ")
 	for scanner.Scan() {
-		text := scanner.Text()
+		searchText = scanner.Text()
 
-		matched, err := regexp.MatchString("total.*", text)
-		if err != nil {
-			fmt.Println("total pattern not matched")
+		fmt.Print("Do you want to follow the update? ")
+		go func() {
+			shouldFollowSearch = scanner.Text()
+
+			chang <- shouldFollowSearch
+		}()
+
+		readValue := <-chang
+
+		if readValue == "y" {
+			duration := 2 * time.Second
+			go func(text string) {
+				wait := duration
+				for {
+					time.Sleep(wait)
+					_, err := covidClient.GetData(ctx, text)
+					count = count + 1
+					if err != nil {
+						panic(err)
+					}
+
+					newChannel <- fmt.Sprintf("%v", count)
+				}
+
+			}("Nepal")
+
+			dataValue.country = <-newChannel
+			data := [][]string{
+				[]string{
+					dataValue.country,
+					// fmt.Sprintf("%d", res.TotalCases),
+					// fmt.Sprintf("%d", res.TotalDeaths),
+					// fmt.Sprintf("%d", res.TotalRecovered),
+					// fmt.Sprintf("%v", res.DeathsPerOneMillion),
+				},
+			}
+			// "TotalCases", "Total Deaths", "Total Recovered", "Death per million"}
+
+			table := tablewriter.NewWriter(os.Stdout)
+			table.SetHeader([]string{"Name"})
+
+			for _, v := range data {
+				table.Append(v)
+			}
+			table.Render()
 		}
 
-		if matched {
-			covidClient.GetData(ctx, text)
-		} else {
-			covidClient.GetData(ctx, text)
+		if readValue == "n" {
+			fmt.Println(shouldFollowSearch)
+
+		}
+
+		if readValue != "n" || readValue != "y" {
+			fmt.Println("You need to put y or n.")
+
 		}
 
 	}
 
-	_, err = httpServer.CreateHTTPServer()
-	if err != nil {
-		panic(err)
-	}
-	defer httpServer.Stop()
+	// for scanner.Scan() {
+	// 	searchText = scanner.Text()
+
+	// 	matched, err := regexp.MatchString("total.*", searchText)
+	// 	if err != nil {
+	// 		fmt.Println("total pattern not matched")
+	// 	}
+
+	// 	if matched {
+	// 		covidClient.GetData(ctx, searchText)
+	// 	} else {
+	// 		covidClient.GetData(ctx, searchText)
+	// 	}
+
+	// 	fmt.Print("Enter the country you want to know info: ")
+	// }
+
 }

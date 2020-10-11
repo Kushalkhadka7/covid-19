@@ -2,50 +2,42 @@ package covidclient
 
 import (
 	"context"
-	"covid_client/grpcconn"
 	pb "covid_client/pb/proto"
 	"fmt"
 	"log"
 )
 
-var responseData *pb.Response
+var responseData *pb.CovidCasesResponse
 
 // CovidClient intializes grpc connection.
 type CovidClient struct {
-	pb.CovidServiceClient
+	client pb.CovidServiceClient
 }
 
 // Servicer grpc service interface.
 type Servicer interface {
-	GetData(ctx context.Context, text string) error
+	GetData(ctx context.Context, text string) (*pb.CovidCasesResponse, error)
 	GetTotalData(text string) error
 }
 
 // New create new covid-19 client.
-func New(conn *grpcconn.GrpcClientConn) Servicer {
-	return &CovidClient{
-		pb.NewCovidServiceClient(conn),
-	}
+func New(client pb.CovidServiceClient) Servicer {
+	return &CovidClient{client}
 }
 
 // GetData get covid related data.
-func (cc *CovidClient) GetData(ctx context.Context, text string) error {
+func (cc *CovidClient) GetData(ctx context.Context, text string) (*pb.CovidCasesResponse, error) {
 	fmt.Println("hello world")
 	req := &pb.CovidCasesRequest{
 		SearchString: text,
 	}
 
-	res, err := cc.GetCurrentCovidInfo(ctx, req)
+	res, err := cc.client.GetCurrentCovidInfo(ctx, req)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	responseData = res
-
-	fmt.Println("hello world")
-	log.Print(responseData)
-
-	return nil
+	return res, nil
 }
 
 // GetTotalData total data.

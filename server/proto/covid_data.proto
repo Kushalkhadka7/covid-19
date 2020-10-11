@@ -38,10 +38,6 @@ message CovidCasesRequest{
    string search_string = 1;
 }
 
-message Response{
-    repeated CovidCasesResponse response = 1;
-}
-
 service CovidService{
-    rpc GetCurrentCovidInfo(CovidCasesRequest) returns(Response) {}
+    rpc GetCurrentCovidInfo(CovidCasesRequest) returns(CovidCasesResponse) {}
 }
